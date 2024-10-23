@@ -1,0 +1,41 @@
+# Ignore build or target directories
+/build/
+/target/
+
+# Ignore log, temporary files, and unnecessary system files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+*.class
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+
+# Ignore environment or sensitive configuration files
+.env
+config.properties  # If you store configuration in a properties file, ignore this file
+
+# Ignore Maven and Gradle files
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+
+# Ignore other temporary files
+*.swp
+*.lock
+*.bak
+*.tmp
+
+# Ignore unnecessary compressed and binary files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.exe
+*.dll

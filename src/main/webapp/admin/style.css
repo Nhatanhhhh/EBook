@@ -1,0 +1,21 @@
+.bg-custom{
+    background: linear-gradient(to right, #4568DC, #B06AB3) !important;
+}
+
+.navbar .nav-item:hover .nav-link{
+    background-color: white;
+    color: #303F9F;
+    border-radius: 8px;
+}
+
+.search-header{
+    display: flex;
+    justify-content: center;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+
