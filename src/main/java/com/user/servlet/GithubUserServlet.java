@@ -4,20 +4,33 @@
  */
 package com.user.servlet;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.sql.SQLException;
+import java.util.Properties;
+
 import com.DAO.UserDAOImpl;
 import com.DB.DBConnect;
 import com.entity.GitHubUser;
 import com.entity.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import java.io.*;
-import java.net.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.sql.SQLException;
-import java.util.Properties;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
