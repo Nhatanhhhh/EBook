@@ -93,6 +93,7 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("userObj", us);
                     session.setAttribute("userType", "normal");
                     resp.sendRedirect("index.jsp");
+                    System.out.println(us);
                 } else {
                     session.setAttribute("failedMsg", "Email & Password Invalid");
                     resp.sendRedirect("login.jsp");

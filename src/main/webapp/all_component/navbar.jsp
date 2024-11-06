@@ -15,9 +15,19 @@
             </a>
         </div>
         <div class="col-md-6 col-lg-6 custom-col">
-            <form class="form-inline my-2 my-lg-0 search-header">
-                <input class="form-control mr-sm-2 search-custom " type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0 btn-custom" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span class="search-text">Search</span></button>
+            <form action="book-list" method="get" class="form-inline">
+                <!-- Search by book name -->
+                <input type="text" name="searchName" class="form-control mr-2" placeholder="Search by name" value="${searchName}">
+
+                <!-- Filter by category -->
+                <select name="category" class="form-control mr-2">
+                    <option value="" ${empty category ? 'selected' : ''}>All Categories</option>
+                    <option value="New" ${category == 'New' ? 'selected' : ''}>New</option>
+                    <option value="Old" ${category == 'Old' ? 'selected' : ''}>Old</option>
+                    <option value="Recent" ${category == 'Recent' ? 'selected' : ''}>Recent</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
 
@@ -71,8 +81,14 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <button class="btn btn-light my-2 my-sm-0" type="submit"><i class="fa-solid fa-gears"></i> Setting</button>
-            <button class="btn btn-light my-2 my-sm-0 ml-1" type="submit"><i class="fa-solid fa-square-phone"></i> Contact Us</button>
+            <c:if test="${empty userObj}">
+                <a href="login.jsp" class="btn btn-light my-2 my-sm-0" type="submit"><i class="fa-solid fa-gears"></i> Setting</a>
+                <a href="helpline.jsp" class="btn btn-light my-2 my-sm-0 ml-1" type="submit"><i class="fa-solid fa-square-phone"></i> Contact Us</a>
+            </c:if>
+            <c:if test="${not empty userObj}">
+                <a href="setting.jsp" class="btn btn-light my-2 my-sm-0" type="submit"><i class="fa-solid fa-gears"></i> Setting</a>
+                <a href="helpline.jsp" class="btn btn-light my-2 my-sm-0 ml-1" type="submit"><i class="fa-solid fa-square-phone"></i> Contact Us</a>
+            </c:if>
         </form>
     </div>
 </nav>

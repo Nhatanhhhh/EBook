@@ -1,29 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="home" value="active" scope="request" />
-<%@page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>EBook: Register</title>
-        <%@include file="all_component/allCss.jsp"%>
+        <%@include file="all_component/allCss.jsp" %>
+        <title>Order Page</title>
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <style>
-            .form-custom {
-                box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-                    rgba(0, 0, 0, 0.12) 0px -12px 30px,
-                    rgba(0, 0, 0, 0.12) 0px 4px 6px,
-                    rgba(0, 0, 0, 0.17) 0px 12px 13px,
-                    rgba(0, 0, 0, 0.09) 0px -3px 5px;
-                border-radius: 20px;
-            }
-            .form-control:focus {
-                outline: none;
-                box-shadow: none;
-                border: 1px solid #ccc;
-            }
 
             * {
                 margin: 0;
@@ -52,6 +36,7 @@
                 background: linear-gradient(to right, #4568DC, #B06AB3);
                 border-radius: 50%;
                 transition: all 0.2s ease;
+                z-index: 1;
             }
 
             .show-chatbot .chatbot-toggler {
@@ -86,6 +71,7 @@
                 box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
                     0 32px 64px -48px rgba(0, 0, 0, 0.5);
                 transition: all 0.1s ease;
+                z-index: 1;
             }
 
             .show-chatbot .chatbot{
@@ -217,92 +203,38 @@
                     display: block;
                 }
             }
+
+
         </style>
-        <script>
-            function validateForm() {
-                var password = document.getElementById("exampleInputPassword1").value;
-                var confirmPassword = document.getElementById("exampleInputConfirmPassword").value;
-                var termsCheckbox = document.getElementById("exampleCheck1").checked;
-
-                if (password !== confirmPassword) {
-                    alert("Passwords do not match.");
-                    return false;
-                }
-
-                if (!termsCheckbox) {
-                    alert("You must agree to the terms and conditions.");
-                    return false;
-                }
-
-                return true;
-            }
-        </script>
     </head>
-    <body style="background-color: #F0F1F2">
+    <body>
         <%@include file="all_component/navbar.jsp" %>
-        <div class="container" style="padding: 60px 0px">
-            <div class="row">
-                <div class="col-lg-4 offset-lg-4">
-                    <div class="card form-custom">
-                        <div class="card-body">
-                            <h4 class="text-center pb-2" style="font-size: 32px">Registration Page</h4>
-
-                            <c:if test="${not empty succMsg}">
-                                <p class="text-center text-success">${succMsg}</p>
-                                <c:remove var="succMsg" scope="session"/>
-                            </c:if>
-
-                            <c:if test="${not empty failedMsg}">
-                                <p class="text-center text-danger">${failedMsg}</p>
-                                <c:remove var="failedMsg" scope="session"/>
-                            </c:if>
-
-                            <form action="register" method="POST" onsubmit="return validateForm()">
-                                <div class="form-group">
-                                    <label for="exampleInputFullName">Enter Full Name</label>
-                                    <input type="text" class="form-control" id="exampleInputFullName" required placeholder="Enter your name" name="fname">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" required placeholder="Enter your email" name="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPhoneNumber">Phone No</label>
-                                    <input type="number" class="form-control" id="exampleInputPhoneNumber" required placeholder="Enter your phone number" name="phno">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" required placeholder="Enter your Password" name="password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputConfirmPassword">Confirm Password</label>
-                                    <input type="password" class="form-control" id="exampleInputConfirmPassword" required placeholder="Confirm your Password">
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="check">
-                                    <label class="form-check-label" for="exampleCheck1">Agree to terms & conditions</label>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-info mt-3">Create Account</button>
-                                </div>
-                                <div class="row" style="justify-content: center;">
-                                    <div style="padding: 20px;">
-                                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/EBook/logingoogle&response_type=code&client_id=61561031673-ugukbhbpmfsvm9fkuq5k60r28bj63os1.apps.googleusercontent.com&approval_prompt=force" style="font-size: 28px;" class="text-danger">
-                                            <i class="fa-brands fa-google"></i>
-                                        </a>
-                                    </div>
-                                    <div style="padding: 20px;">
-                                        <a href="https://github.com/login/oauth/authorize?client_id=Ov23liE6hJC5720G2W3Y&redirect_uri=http://localhost:9999/EBook/logingithub&scope=user:email" style="font-size: 28px;" class="text-dark">
-                                            <i class="fa-brands fa-github"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="container-fluid pt-5 pb-5">
+            <h3 class="text-center">Your Order</h3>
+            <table class="table table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Payment Type</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
 
         <!-- ChatBOT -->
         <div>
@@ -331,5 +263,6 @@
         <!-- End ChatBOT -->
         <%@include file="all_component/footer.jsp"%>
         <script src="assets/script.js" defer></script>
+
     </body>
 </html>

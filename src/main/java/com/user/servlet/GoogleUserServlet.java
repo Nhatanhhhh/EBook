@@ -4,18 +4,28 @@
  */
 package com.user.servlet;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.UUID;
+
 import com.DAO.UserDAOImpl;
 import com.DB.DBConnect;
 import com.entity.GoogleUser;
 import com.entity.User;
-import java.io.*;
-import java.net.*;
-import java.util.Properties;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.util.UUID;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -23,34 +33,13 @@ import java.util.UUID;
  */
 public class GoogleUserServlet extends HttpServlet {
 
-    private String CLIENT_ID;
-    private String CLIENT_SECRET;
-    private String REDIRECT_URI;
-
-    @Override
-    public void init() throws ServletException {
-        // Load configuration from properties file
-        try (InputStream input = getServletContext().getResourceAsStream("/WEB-INF/config.properties")) {
-            Properties prop = new Properties();
-            if (input == null) {
-                throw new FileNotFoundException("Property file not found in the classpath");
-            }
-            // Load properties file
-            prop.load(input);
-            CLIENT_ID = prop.getProperty("GOOGLE_CLIENT_ID");
-            CLIENT_SECRET = prop.getProperty("GOOGLE_CLIENT_SECRET");
-            REDIRECT_URI = prop.getProperty("GOOGLE_REDIRECT_URI");
-        } catch (IOException ex) {
-            throw new ServletException("Could not load configuration properties", ex);
-        }
-
-        if (CLIENT_ID == null || CLIENT_SECRET == null || REDIRECT_URI == null) {
-            throw new ServletException("Missing required configuration properties.");
-        }
-    }
+    private static final String CLIENT_ID = GOOGLE_CLIENT_ID;
+    private static final String CLIENT_SECRET = GOOGLE_CLIENT_SECRET;
+    private static final String REDIRECT_URI = GOOGLE_REDIRECT_URI;
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -105,7 +94,7 @@ public class GoogleUserServlet extends HttpServlet {
                     if (existingUser != null) {
                         session.setAttribute("userObj", existingUser);
                     } else {
-                        // T?o m?i ng??i dùng và chèn vào b?ng User và GoogleUser
+                        // T?o m?i ng??i dï¿½ng vï¿½ chï¿½n vï¿½o c? b?ng User vï¿½ GoogleUser
                         User newUser = new User();
                         newUser.setName(name);
                         newUser.setEmail(email);
@@ -215,4 +204,5 @@ public class GoogleUserServlet extends HttpServlet {
 
         return content.toString();
     }
+
 }

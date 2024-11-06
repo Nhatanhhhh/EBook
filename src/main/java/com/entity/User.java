@@ -8,7 +8,7 @@ package com.entity;
  *
  * @author Nhat_Anh
  */
-public class User implements InterfaceUser{
+public class User implements InterfaceUser {
 
     private int userID;
     private String Name;
@@ -109,6 +109,11 @@ public class User implements InterfaceUser{
 
     public void setPincode(String Pincode) {
         this.Pincode = Pincode;
+    }
+
+    @Override
+    public String getZip() {
+        return Pincode;
     }
 
     @Override

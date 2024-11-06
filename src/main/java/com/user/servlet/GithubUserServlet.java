@@ -18,7 +18,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  *
@@ -26,9 +25,9 @@ import java.util.UUID;
  */
 public class GithubUserServlet extends HttpServlet {
 
-    private String CLIENT_ID;
-    private String CLIENT_SECRET;
-    private String REDIRECT_URI;
+    private String CLIENT_ID = GITHUB_CLIENT_ID;
+    private String CLIENT_SECRET = GITHUB_CLIENT_SECRET;
+    private String REDIRECT_URI = GITHUB_REDIRECT_URI;
 
     @Override
     public void init() throws ServletException {
@@ -123,7 +122,6 @@ public class GithubUserServlet extends HttpServlet {
                         newGitHubUser.setGHEmail(email);
                         newGitHubUser.setGHName(name);
                         newGitHubUser.setAuthToken(accessToken);
-                        newGitHubUser.setPassword(UUID.randomUUID().toString());
 
                         if (dao.registerGitHubUser(newUser, newGitHubUser)) {
                             session.setAttribute("userObj", newGitHubUser);
@@ -158,7 +156,7 @@ public class GithubUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

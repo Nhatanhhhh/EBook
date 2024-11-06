@@ -5,7 +5,7 @@
 
 package com.user.servlet;
 
-import com.DAO.CartDAOImpl;
+import com.DAO.BookDAOImpl;
 import com.DB.DBConnect;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Nhat_Anh
  */
-public class RemoveBookCart extends HttpServlet {
+public class DeleteOldBook extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +36,10 @@ public class RemoveBookCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RemoveBookCart</title>");  
+            out.println("<title>Servlet DeleteOldBook</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RemoveBookCart at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet DeleteOldBook at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,19 +56,24 @@ public class RemoveBookCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int bid = Integer.parseInt(request.getParameter("bid"));
-        int uid = Integer.parseInt(request.getParameter("uid"));
-        int cid = Integer.parseInt(request.getParameter("cid"));
-        CartDAOImpl dao = new CartDAOImpl(DBConnect.getConn());
-        boolean f = dao.deleteBook(bid,uid, cid);
-        HttpSession session = request.getSession();
-        
-        if(f){
-            session.setAttribute("succMsg", "Book Removed form Cart");
-            response.sendRedirect("checkout.jsp");
-        }else{
-            session.setAttribute("failedMsg", "Something wrong on server");
-            response.sendRedirect("checkout.jsp");
+        try {
+            String em = request.getParameter("em");
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            BookDAOImpl dao = new BookDAOImpl(DBConnect.getConn());
+            
+            boolean f =dao.oldBookDelete(em, "Old", id);
+            HttpSession session = request.getSession();
+            if(f){
+                session.setAttribute("succMsg", "Old Book Delete successfully");
+                response.sendRedirect("old_book.jsp");
+            }else{
+                session.setAttribute("failedMsg", "Something wrong on server");
+                response.sendRedirect("old_book.jsp");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     } 
 

@@ -1,10 +1,11 @@
 package com.DAO;
 
-import com.entity.BookDtls;
 import com.entity.Cart;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CartDAOImpl implements CartDAO {
     public CartDAOImpl(Connection conn) {
         this.conn = conn;
     }
-
+    
     @Override
     public boolean addCart(Cart c) {
         boolean f = false;
@@ -50,7 +51,7 @@ public class CartDAOImpl implements CartDAO {
         Cart c = null;
         double totalPrice = 0.00;
         try {
-            String sql = "SELECT * FROM [dbo].[Cart] WHERE [UserID]=?";
+            String sql = "SELECT * FROM [dbo].[Cart] WHERE [UserID] = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userID);
 
@@ -78,4 +79,27 @@ public class CartDAOImpl implements CartDAO {
         return list;
     }
 
+    
+    public boolean deleteBook(int bid, int uid, int cid){
+        boolean f = false;
+        
+        try {
+            String sql = "DELETE FROM [dbo].[Cart]  WHERE [BookID] = ? AND [UserID] = ? AND [CartID] = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, bid);
+            ps.setInt(2, uid);
+            ps.setInt(3, cid);
+            
+            int i = ps.executeUpdate();
+            
+            if(i == 1){
+                f = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        return f;
+    }
 }

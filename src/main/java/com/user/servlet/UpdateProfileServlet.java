@@ -2,27 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.ChatBOT.servlet;
+package com.user.servlet;
 
+import com.DAO.UserDAOImpl;
+import com.DB.DBConnect;
+import com.entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author Nhat_Anh
  */
-public class SendMessageServlet extends HttpServlet {
-
-    private static final String API_KEY = System.getenv("API_KEY");
+public class UpdateProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +38,10 @@ public class SendMessageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SendMessageServlet</title>");
+            out.println("<title>Servlet UpdateProfileServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SendMessageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -76,36 +73,40 @@ public class SendMessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userMessage = request.getParameter("message");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("fname");
+            String email = request.getParameter("email");
+            String phno = request.getParameter("phno");
+            String password = request.getParameter("password");
 
-        // T?o k?t n?i t?i d?ch v? API bên ngoài
-        URL url = new URL("https://api.groq.com/openai/v1/chat/completions");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization", "Bearer " + API_KEY);
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setDoOutput(true);
+            User us = new User();
+            us.setUserID(id);
+            us.setName(name);
+            us.setEmail(email);
+            us.setPhno(phno);
 
-        // G?i request JSON
-        String jsonInputString = "{ \"model\": \"llama-3.1-70b-versatile\", \"messages\": [{\"role\": \"user\", \"content\": \"" + userMessage + "\"}], \"max_tokens\": 3000, \"temperature\": 0.7 }";
-        try ( OutputStream os = conn.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-
-        // Nh?n response t? d?ch v? API
-        StringBuilder responseContent;
-        try ( BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-            String responseLine = null;
-            responseContent = new StringBuilder();
-            while ((responseLine = br.readLine()) != null) {
-                responseContent.append(responseLine.trim());
+            HttpSession session = request.getSession();
+            UserDAOImpl dao = new UserDAOImpl(DBConnect.getConn());
+            boolean f = dao.checkPassword(id, password);
+            if (f) {
+                boolean f2 = dao.updateProfile(us);
+                if (f2) {
+                    session.setAttribute("succMsg", "Update Profile Successfully!");
+                    response.sendRedirect("edit_profile.jsp");
+                } else {
+                    session.setAttribute("failedMsg", "Something wrong on server..");
+                    response.sendRedirect("edit_profile.jsp");
+                }
+            } else {
+                session.setAttribute("failedMsg", "Your Password is Incorrect");
+                response.sendRedirect("edit_profile.jsp");
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // G?i l?i d? li?u cho client
-        response.setContentType("application/json");
-        response.getWriter().write(responseContent.toString());
     }
 
     /**

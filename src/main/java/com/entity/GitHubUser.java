@@ -151,6 +151,11 @@ public class GitHubUser implements InterfaceUser {
     }
 
     @Override
+    public String getZip() {
+        return Pincode;
+    }
+
+    @Override
     public String toString() {
         return "GitHubUser{" + "gitHubID=" + gitHubID + ", userID=" + userID + ", authToken=" + authToken + ", GHEmail=" + GHEmail + ", GHName=" + GHName + ", password=" + password + ", Phno=" + Phno + ", Address=" + Address + ", Landmark=" + Landmark + ", City=" + City + ", State=" + State + ", Pincode=" + Pincode + '}';
     }

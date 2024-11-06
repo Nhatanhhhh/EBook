@@ -5,21 +5,26 @@
 
 package com.user.servlet;
 
-import com.DAO.CartDAOImpl;
+import com.DAO.BookDAOImpl;
 import com.DB.DBConnect;
+import com.entity.BookDtls;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
 
 /**
  *
  * @author Nhat_Anh
  */
-public class RemoveBookCart extends HttpServlet {
+@MultipartConfig
+public class SellBook extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +41,10 @@ public class RemoveBookCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RemoveBookCart</title>");  
+            out.println("<title>Servlet SellBook</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RemoveBookCart at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet SellBook at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,20 +61,7 @@ public class RemoveBookCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int bid = Integer.parseInt(request.getParameter("bid"));
-        int uid = Integer.parseInt(request.getParameter("uid"));
-        int cid = Integer.parseInt(request.getParameter("cid"));
-        CartDAOImpl dao = new CartDAOImpl(DBConnect.getConn());
-        boolean f = dao.deleteBook(bid,uid, cid);
-        HttpSession session = request.getSession();
-        
-        if(f){
-            session.setAttribute("succMsg", "Book Removed form Cart");
-            response.sendRedirect("checkout.jsp");
-        }else{
-            session.setAttribute("failedMsg", "Something wrong on server");
-            response.sendRedirect("checkout.jsp");
-        }
+        processRequest(request, response);
     } 
 
     /** 
@@ -82,7 +74,43 @@ public class RemoveBookCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String bookName = request.getParameter("bname");
+            String author = request.getParameter("author");
+            String price = request.getParameter("price");
+            String categories = "Old";
+            String status = "Active";
+            Part part = request.getPart("bimg");
+            String fileName = part.getSubmittedFileName();
+            
+            String userEmail = request.getParameter("user");
+
+            BookDtls b = new BookDtls(bookName, author, price, categories, status, fileName, userEmail);
+
+            BookDAOImpl dao = new BookDAOImpl(DBConnect.getConn());
+
+            boolean f = dao.addBooks(b);
+
+            HttpSession session = request.getSession();
+
+            if (f) {
+
+                String path = getServletContext().getRealPath("") + "book";
+
+                File file = new File(path);
+
+                part.write(path + File.separator + fileName);
+
+                session.setAttribute("succMsg", "Book Added Successfully!");
+                response.sendRedirect("sell_book.jsp");
+            } else {
+                session.setAttribute("failedMsg", "Something wrong on Server");
+                response.sendRedirect("sell_book.jsp");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /** 

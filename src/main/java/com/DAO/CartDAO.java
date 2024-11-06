@@ -15,4 +15,6 @@ public interface CartDAO {
     
     public List<Cart> getBookByUser(int userID);
     
+    public boolean deleteBook(int bid, int uid, int cid);
+    
 }

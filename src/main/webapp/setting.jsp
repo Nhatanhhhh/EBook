@@ -1,28 +1,113 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="home" value="active" scope="request" />
-<%@page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>EBook: Register</title>
-        <%@include file="all_component/allCss.jsp"%>
+        <%@include file="all_component/allCss.jsp" %>
+        <title>Setting Page</title>
+        <!-- Google Fonts Link For Icons  -->
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-        <style>
-            .form-custom {
-                box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-                    rgba(0, 0, 0, 0.12) 0px -12px 30px,
-                    rgba(0, 0, 0, 0.12) 0px 4px 6px,
-                    rgba(0, 0, 0, 0.17) 0px 12px 13px,
-                    rgba(0, 0, 0, 0.09) 0px -3px 5px;
-                border-radius: 20px;
+        <style type="text/css">
+            a{
+                text-decoration: none;
+                color: black;
             }
-            .form-control:focus {
-                outline: none;
-                box-shadow: none;
-                border: 1px solid #ccc;
+
+            a:hover{
+                text-decoration: none;
+            }
+
+            .custom-box {
+                box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+                border-radius: 12px;
+                background: #fff;
+                overflow: hidden;
+                transition: all 0.25s ease 0s;
+            }
+
+            .custom-box:hover{
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+
+            .custom-box-1{
+                background: linear-gradient(to right, #EACDA3, #D6AE7B);
+                color: #FFF;
+            }
+
+            .custom-box-1:hover{
+                background: linear-gradient(to right, #EACDA3, #D6AE7B);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+            }
+
+            .custom-box-2{
+                background: linear-gradient(to right, #2F7336, #AA3A38);
+                color: #FFF;
+            }
+
+            .custom-box-2:hover{
+                background: linear-gradient(to right, #2F7336, #AA3A38);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+            }
+
+            .custom-box-3{
+                background: linear-gradient(to right, #114357, #F29492);
+                color: #FFF;
+            }
+
+            .custom-box-3:hover{
+                background: linear-gradient(to right, #114357, #F29492);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+            }
+
+            .custom-box-4{
+                background: linear-gradient(to right, #6A3093, #A044FF);
+                color: #FFF;
+            }
+
+            .custom-box-4:hover{
+                background: linear-gradient(to right, #6A3093, #A044FF);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+            }
+
+            .custom-box-5{
+                background: linear-gradient(to right, #457FCA, #5691C8);
+                color: #FFF;
+            }
+
+            .custom-box-5:hover{
+                background: linear-gradient(to right, #457FCA, #5691C8);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+            }
+
+            .custom-box-6{
+                background: linear-gradient(to right, #BBD2C5, #536976, #292E49);
+                color: #FFF;
+            }
+
+            .custom-box-6:hover{
+                background: linear-gradient(to right, #BBD2C5, #536976, #292E49);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
             }
 
             * {
@@ -218,89 +303,81 @@
                 }
             }
         </style>
-        <script>
-            function validateForm() {
-                var password = document.getElementById("exampleInputPassword1").value;
-                var confirmPassword = document.getElementById("exampleInputConfirmPassword").value;
-                var termsCheckbox = document.getElementById("exampleCheck1").checked;
-
-                if (password !== confirmPassword) {
-                    alert("Passwords do not match.");
-                    return false;
-                }
-
-                if (!termsCheckbox) {
-                    alert("You must agree to the terms and conditions.");
-                    return false;
-                }
-
-                return true;
-            }
-        </script>
     </head>
-    <body style="background-color: #F0F1F2">
+    <body style="background-color: #F7F7F7;">
+
+        <c:if test="${empty userObj}">
+            <c:redirect url="login.jsp" />
+        </c:if>
+
         <%@include file="all_component/navbar.jsp" %>
-        <div class="container" style="padding: 60px 0px">
+
+        <div class="container mb-5 pb-5">
+            <h3 class="text-center pb-3 pt-3">SETTING</h3>
             <div class="row">
-                <div class="col-lg-4 offset-lg-4">
-                    <div class="card form-custom">
-                        <div class="card-body">
-                            <h4 class="text-center pb-2" style="font-size: 32px">Registration Page</h4>
-
-                            <c:if test="${not empty succMsg}">
-                                <p class="text-center text-success">${succMsg}</p>
-                                <c:remove var="succMsg" scope="session"/>
-                            </c:if>
-
-                            <c:if test="${not empty failedMsg}">
-                                <p class="text-center text-danger">${failedMsg}</p>
-                                <c:remove var="failedMsg" scope="session"/>
-                            </c:if>
-
-                            <form action="register" method="POST" onsubmit="return validateForm()">
-                                <div class="form-group">
-                                    <label for="exampleInputFullName">Enter Full Name</label>
-                                    <input type="text" class="form-control" id="exampleInputFullName" required placeholder="Enter your name" name="fname">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" required placeholder="Enter your email" name="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPhoneNumber">Phone No</label>
-                                    <input type="number" class="form-control" id="exampleInputPhoneNumber" required placeholder="Enter your phone number" name="phno">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" required placeholder="Enter your Password" name="password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputConfirmPassword">Confirm Password</label>
-                                    <input type="password" class="form-control" id="exampleInputConfirmPassword" required placeholder="Confirm your Password">
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="check">
-                                    <label class="form-check-label" for="exampleCheck1">Agree to terms & conditions</label>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-info mt-3">Create Account</button>
-                                </div>
-                                <div class="row" style="justify-content: center;">
-                                    <div style="padding: 20px;">
-                                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/EBook/logingoogle&response_type=code&client_id=61561031673-ugukbhbpmfsvm9fkuq5k60r28bj63os1.apps.googleusercontent.com&approval_prompt=force" style="font-size: 28px;" class="text-danger">
-                                            <i class="fa-brands fa-google"></i>
-                                        </a>
-                                    </div>
-                                    <div style="padding: 20px;">
-                                        <a href="https://github.com/login/oauth/authorize?client_id=Ov23liE6hJC5720G2W3Y&redirect_uri=http://localhost:9999/EBook/logingithub&scope=user:email" style="font-size: 28px;" class="text-dark">
-                                            <i class="fa-brands fa-github"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
+                <div class="col-md-4">
+                    <a href="sell_book.jsp">
+                        <div class="card custom-box">
+                            <div class="card-body text-center custom-box-1">
+                                <i class="fa-solid fa-book-medical fa-2x"></i>
+                                <h4>Sell Book</h4>
+                                <p>Sell Your Old Book</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
+                <div class="col-md-4">
+                    <a href="edit_profile.jsp">
+                        <div class="card custom-box">
+                            <div class="card-body text-center custom-box-2">
+                                <i class="fa-regular fa-address-card fa-2x"></i>
+                                <h4>Login & Security (Edit Profile)</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="old_book.jsp">
+                        <div class="card custom-box">
+                            <div class="card-body text-center custom-box-6">
+                                <i class="fa-solid fa-book-medical fa-2x"></i>
+                                <h4>Old Book</h4>
+                                <p>Management your Old Book</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <a href="order.jsp">
+                        <div class="card custom-box">
+                            <div class="card-body text-center custom-box-4">
+                                <i class="fa-solid fa-box-archive fa-2x"></i>
+                                <h4>Your Order</h4>
+                                <p>Track Your Order</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <a href="helpline.jsp">
+                        <div class="card custom-box">
+                            <div class="card-body text-center custom-box-5">
+                                <i class="fa-solid fa-headset fa-2x"></i>
+                                <h4>Help Center</h4>
+                                <p>24*7 Service</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+
             </div>
         </div>
 
@@ -329,7 +406,8 @@
         </div>
 
         <!-- End ChatBOT -->
-        <%@include file="all_component/footer.jsp"%>
+        <%@include file="all_component/footer.jsp" %>
         <script src="assets/script.js" defer></script>
+
     </body>
 </html>

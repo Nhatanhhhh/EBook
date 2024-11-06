@@ -1,6 +1,6 @@
 package com.entity;
 
-public class GoogleUser implements InterfaceUser{
+public class GoogleUser implements InterfaceUser {
 
     private String googleID;
     private int userID;
@@ -140,6 +140,11 @@ public class GoogleUser implements InterfaceUser{
     @Override
     public String getEmail() {
         return GGEmail;
+    }
+
+    @Override
+    public String getZip() {
+        return Pincode;
     }
 
     @Override

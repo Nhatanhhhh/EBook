@@ -10,4 +10,8 @@ public interface InterfaceUser {
     String getEmail();
     String getPhno();
     String getAddress();
+    String getLandmark();
+    String getCity();
+    String getState();
+    String getZip();
 }

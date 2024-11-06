@@ -58,12 +58,10 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Ki?m tra và l?y giá tr? bid
             String bidParam = request.getParameter("bid");
             String uidParam = request.getParameter("userid");
 
             if (bidParam == null || uidParam == null || bidParam.isEmpty() || uidParam.isEmpty()) {
-                // X? lý l?i n?u tham s? bid ho?c userid không có
                 response.getWriter().println("Invalid parameters: BookID or UserID is missing.");
                 return;
             }

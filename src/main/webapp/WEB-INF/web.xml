@@ -41,8 +41,12 @@
         <servlet-class>com.user.servlet.RemoveBookCart</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SendMessageServlet</servlet-name>
-        <servlet-class>com.ChatBOT.servlet.SendMessageServlet</servlet-class>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.user.servlet.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SellBook</servlet-name>
+        <servlet-class>com.user.servlet.SellBook</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -85,8 +89,16 @@
         <url-pattern>/remove_book</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SendMessageServlet</servlet-name>
-        <url-pattern>/sendMessageServlet</url-pattern>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SellBook</servlet-name>
+        <url-pattern>/sellbook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/update_profile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

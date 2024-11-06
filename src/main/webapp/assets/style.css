@@ -1,3 +1,13 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins" sans-serif;
+}
+
 body {
     background: #E3F2FD;
 }
@@ -117,7 +127,7 @@ body {
     white-space: pre-wrap;
     font-size: 0.95rem;
     padding: 12px 16px;
-    border-radius: 10px 10px 0px 10px;
+    border-radius: 10px 10px 0 10px;
     background: linear-gradient(to right, #4568DC, #B06AB3);
 }
 
@@ -129,7 +139,7 @@ body {
 .chatbox .incoming p {
     color: #000;
     background: #F2F2F2;
-    border-radius: 10px 10px 10px 0px;
+    border-radius: 10px 10px 10 0px;
 }
 
 .chatbot .chat-input {

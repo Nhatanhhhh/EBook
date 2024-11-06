@@ -3,6 +3,7 @@ package com.DAO;
 import com.DB.DBConnect;
 import com.entity.GitHubUser;
 import com.entity.GoogleUser;
+import com.entity.InterfaceUser;
 import com.entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -135,11 +136,10 @@ public class UserDAOImpl implements UserDAO {
             conn = DBConnect.getConn();
             conn.setAutoCommit(false);
 
-            String insertUserSQL = "INSERT INTO [dbo].[User](Name, Email, PhoneNo) VALUES(?,?,?)";
+            String insertUserSQL = "INSERT INTO [dbo].[User](Name, Email) VALUES(?,?)";
             PreparedStatement userStmt = conn.prepareStatement(insertUserSQL, Statement.RETURN_GENERATED_KEYS);
             userStmt.setString(1, user.getName());
             userStmt.setString(2, user.getEmail());
-            userStmt.setString(3, user.getPhno());
             int rowsAffectedUser = userStmt.executeUpdate();
 
             if (rowsAffectedUser == 1) {
@@ -222,19 +222,20 @@ public class UserDAOImpl implements UserDAO {
                 throw new SQLException("GithubID is null or empty.");
             }
 
-            String sql = "INSERT INTO [dbo].[UserGithub]([GithubID], [UserID], [GHEmail], [GHName], [AuthToken], [Password], [Address], [Landmark], [City], [State], [Pincode]) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO [dbo].[UserGithub]([GithubID], [UserID], [GHEmail], [GHName], [PhoneNo], [AuthToken], [Password], [Address], [Landmark], [City], [State], [Pincode]) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, user.getGithubID());
             ps.setInt(2, user.getUserID());
             ps.setString(3, user.getGHEmail());
             ps.setString(4, user.getGHName());
-            ps.setString(5, user.getAuthToken());
-            ps.setString(6, user.getPassword());
-            ps.setString(7, user.getAddress());
-            ps.setString(8, user.getLandmark());
-            ps.setString(9, user.getCity());
-            ps.setString(10, user.getState());
-            ps.setString(11, user.getPincode());
+            ps.setString(5, user.getPhno());
+            ps.setString(6, user.getAuthToken());
+            ps.setString(7, user.getPassword());
+            ps.setString(8, user.getAddress());
+            ps.setString(9, user.getLandmark());
+            ps.setString(10, user.getCity());
+            ps.setString(11, user.getState());
+            ps.setString(12, user.getPincode());
 
             int i = ps.executeUpdate();
             if (i == 1) {
@@ -260,11 +261,10 @@ public class UserDAOImpl implements UserDAO {
             conn = DBConnect.getConn();
             conn.setAutoCommit(false);
 
-            String insertUserSQL = "INSERT INTO [dbo].[User](Name, Email, PhoneNo) VALUES(?,?,?)";
+            String insertUserSQL = "INSERT INTO [dbo].[User](Name, Email) VALUES(?,?)";
             PreparedStatement userStmt = conn.prepareStatement(insertUserSQL, Statement.RETURN_GENERATED_KEYS);
             userStmt.setString(1, user.getName());
             userStmt.setString(2, user.getEmail());
-            userStmt.setString(3, user.getPhno());
             int rowsAffectedUser = userStmt.executeUpdate();
 
             if (rowsAffectedUser == 1) {
@@ -337,6 +337,79 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return gu;
+    }
+
+    @Override
+    public boolean checkPassword(int id, String ps) {
+        boolean passwordExists = false;
+        String hashedPassword = DBConnect.hashPasswordMD5(ps);
+
+        try {
+            // Step 1: Check if the password exists for the user in the User table
+            String checkSql = "SELECT Password FROM [dbo].[User] WHERE [ID] = ?";
+            try ( PreparedStatement checkPst = conn.prepareStatement(checkSql)) {
+                checkPst.setInt(1, id);
+                try ( ResultSet rs = checkPst.executeQuery()) {
+                    if (rs.next()) {
+                        String storedPassword = rs.getString("Password");
+
+                        // Step 2: If User's password is null, update it
+                        if (storedPassword == null) {
+                            String updateUserSql = "UPDATE [dbo].[User] SET [Password] = ? WHERE [ID] = ?";
+                            try ( PreparedStatement updateUserPst = conn.prepareStatement(updateUserSql)) {
+                                updateUserPst.setString(1, hashedPassword);
+                                updateUserPst.setInt(2, id);
+                                updateUserPst.executeUpdate();
+                            }
+                            passwordExists = true;  // Password is now set in the User table
+                        } else {
+                            passwordExists = storedPassword.equals(hashedPassword);  // Verify password
+                        }
+
+                        // Step 3: Update password in UserGoogle if it exists and is null
+                        String updateGoogleSql = "UPDATE [dbo].[UserGoogle] SET [Password] = ? WHERE [UserID] = ? AND [Password] IS NULL";
+                        try ( PreparedStatement updateGooglePst = conn.prepareStatement(updateGoogleSql)) {
+                            updateGooglePst.setString(1, hashedPassword);
+                            updateGooglePst.setInt(2, id);
+                            updateGooglePst.executeUpdate();
+                        }
+
+                        // Step 4: Update password in UserGithub if it exists and is null
+                        String updateGithubSql = "UPDATE [dbo].[UserGithub] SET [Password] = ? WHERE [UserID] = ? AND [Password] IS NULL";
+                        try ( PreparedStatement updateGithubPst = conn.prepareStatement(updateGithubSql)) {
+                            updateGithubPst.setString(1, hashedPassword);
+                            updateGithubPst.setInt(2, id);
+                            updateGithubPst.executeUpdate();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return passwordExists;
+    }
+
+    @Override
+    public boolean updateProfile(User us) {
+        boolean f = false;
+        try {
+            String sql = "UPDATE [dbo].[User] SET [Name] = ?, [Email] = ?, [PhoneNo] = ? WHERE [ID] = ? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, us.getName());
+            ps.setString(2, us.getEmail());
+            ps.setString(3, us.getPhno());
+            ps.setInt(4, us.getUserID());
+
+            int i = ps.executeUpdate();
+            if (i == 1) {
+                return f = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 
 }

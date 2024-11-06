@@ -12,8 +12,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>CheckOut Page</title>
         <%@include file="all_component/allCss.jsp"%>
+        <link rel="stylesheet" href="assets/style.css"/>
+        <!-- Google Fonts Link For Icons  -->
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <style>
             input[type="number"]::-webkit-outer-spin-button,
             input[type="number"]::-webkit-inner-spin-button {
@@ -39,7 +43,7 @@
             .search-header i{
                 display: none;
             }
-            
+
             .section{
                 padding: 50px 20px;
             }
@@ -60,8 +64,21 @@
 
         <c:if test="${empty userObj}">
             <c:redirect url="login.jsp">
-
             </c:redirect>
+        </c:if>
+
+        <c:if test="${not empty succMsg}">
+            <div class="alert alert-success" role="alert">
+                ${succMsg}
+            </div>
+            <c:remove var="succMsg" scope="session"/>
+        </c:if>
+
+        <c:if test="${not empty failedMsg}">
+            <div class="alert alert-danger" role="alert">
+                ${failedMsg}
+            </div>
+            <c:remove var="failedMsg" scope="session"/>
         </c:if>
 
         <div class="container">
@@ -94,7 +111,7 @@
                                         <td><%=c.getAuthor()%></td>
                                         <td><%=c.getPrice()%></td>
                                         <td>
-                                            <a href="remove_book?bid=<%=c.getBid()%>" class="btn btn-sm btn-danger">Remove</a>
+                                            <a href="remove_book?cid=<%=c.getCid()%>&&bid=<%=c.getBid()%>&&uid=<%=c.getUserid()%>" class="btn btn-sm btn-danger">Remove</a>
                                         </td>
                                     </tr>
                                     <%
@@ -116,58 +133,61 @@
                 <div class="col-md-6 section">
                     <div class="card form-custom">
                         <div class="card-body">
-                            <form>
+                            <form action="order" method="POST">
                                 <h3 class="text-center text-success">Your Details for Order</h3>
 
+                                <input type="hidden" value="${userObj.userID}" name="id"/>
+                                
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputName">Name</label>
-                                        <input type="text" class="form-control" id="inputName" value="">
+                                        <input type="text" class="form-control" id="inputName" value="${userObj.name}" readonly name="name" required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputEmail">Email</label>
-                                        <input type="email" class="form-control" id="inputEmail" value="">
+                                        <input type="email" class="form-control" id="inputEmail" value="${userObj.email}" readonly name="email" required>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputPhonu">Phone Number</label>
-                                        <input type="number" class="form-control" id="inputPhonu" placeholder="Enter your Phone Number" value="">
+                                        <input type="number" class="form-control" id="inputPhonu" placeholder="Enter your Phone Number" value="${userObj.phno}" readonly name="phno" required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputAddress">Address</label>
-                                        <input type="text" class="form-control" id="inputAddress" placeholder="Enter your Address" value="">
+                                        <input type="text" class="form-control" id="inputAddress" placeholder="Enter your Address" value="" name="address" required>
                                     </div>
                                 </div>
+
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputLandmark">Landmark</label>
-                                        <input type="text" class="form-control" id="inputLandmark" placeholder="Enter your Landmark">
+                                        <input type="text" class="form-control" id="inputLandmark" placeholder="Enter your Landmark" name="landmark" required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputCity">City</label>
-                                        <input type="text" class="form-control" id="inputCity" placeholder="Enter your City">
+                                        <input type="text" class="form-control" id="inputCity" placeholder="Enter your City" name="city" required>
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="inputLandmark">State</label>
-                                        <input type="text" class="form-control" id="inputLandmark" placeholder="Enter your Landmark">
+                                        <label for="inputState">State</label>
+                                        <input type="text" class="form-control" id="inputState" placeholder="Enter your State" name="state" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="inputCity">Pin Code</label>
-                                        <input type="text" class="form-control" id="inputCity" placeholder="Enter your City">
+                                        <label for="inputZip">Pin Code</label>
+                                        <input type="text" class="form-control" id="inputZip" placeholder="Enter your Zip code" name="pincode" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Payment Type</label>
-                                    <select class="form-control">
-                                        <option>---Select---</option>
-                                        <option>Cash On Delivery</option>
+                                    <select class="form-control" name="payment">
+                                        <option value="noselect">---Select---</option>
+                                        <option value="COD">Cash On Delivery</option>
                                     </select>
                                 </div>
 
@@ -182,5 +202,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- ChatBOT -->
+        <div>
+            <button class="chatbot-toggler">
+                <span class="material-symbols-outlined">mode_comment</span>
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="chatbot">
+                <header>
+                    <h2>ChatBOT for Book 📚</h2>
+                    <span class="close-btn material-symbols-outlined">close</span>
+                </header>
+                <ul class="chatbox">
+                    <li class="chat incoming">
+                        <span class="material-symbols-outlined">smart_toy</span>
+                        <p>Hi there 👋 <br>How can I help you today?</p>
+                    </li>
+                </ul>
+                <div class="chat-input">
+                    <textarea placeholder="Enter a message..." required></textarea>
+                    <span id="send-btn" class="material-symbols-outlined">send</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- End ChatBOT -->
+        <script src="assets/script.js" defer></script>
     </body>
 </html>
