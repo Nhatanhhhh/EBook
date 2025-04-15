@@ -70,26 +70,11 @@ A comprehensive e-commerce solution for book retailers, built with **Java EE (JS
 
 ## 🖼️ Screenshots
 
-![Homepage](https://github.com/Nhatanhhhh/EBook/assets/homepage.png)
-![Book List](https://github.com/Nhatanhhhh/EBook/assets/booklist.png)
-![Admin Dashboard](https://github.com/Nhatanhhhh/EBook/assets/admindashboard.png)
-![Order Details](https://github.com/Nhatanhhhh/EBook/assets/orderdetails.png)
-![Statistics](https://github.com/Nhatanhhhh/EBook/assets/statistics.png)
-
----
-
-## 📄 Related Documents
-
-- 📘 **Software Design Specification (SDS)**:  
-  [G4-EBook_SDS_final.pdf](https://github.com/Nhatanhhhh/EBook/docs/G4-EBook_SDS_final.pdf)
-
-- 📗 **Requirement Design Specification (RDS)**:  
-  [G4-EBook_RDS_final.pdf](https://github.com/Nhatanhhhh/EBook/docs/G4-EBook_RDS_final.pdf)
-
-- 📙 **Final Release Document**:  
-  [G4-EBook_Final_Release_Document.pdf](https://github.com/Nhatanhhhh/EBook/docs/G4-EBook_Final_Release_Document.pdf)
-
----
+![Homepage](https://github.com/user-attachments/assets/843a27d0-4021-4819-a0e1-034752af9753)
+![Book List](https://github.com/user-attachments/assets/42be3a79-56cd-4269-8afc-1198217ffc2f)
+![Admin Dashboard](https://github.com/user-attachments/assets/1fca205c-45cf-4e23-adea-485a869b9183)
+![Order Checkout](https://github.com/user-attachments/assets/1d6d863c-347a-4807-b2f0-497fc91cff3f)
+![Setting](https://github.com/user-attachments/assets/c544024f-5b7e-47db-82c2-c9602a7e6fae)
 
 ## 🙌 How to Contribute
 
