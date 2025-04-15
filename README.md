@@ -49,22 +49,12 @@ A comprehensive e-commerce solution for book retailers, built with **Java EE (JS
 ### 🛒 Shopping Features
 - Book browsing with filters/sorting  
 - Cart management  
-- Order processing  
-- Voucher system  
-- Book feedback
+- Order processing 
 
 ### 🛠️ Admin Features
 - Book management  
-- Staff management  
-- Inventory control  
 - Sales analytics  
 - Chatbot monitoring
-
-### 📊 Statistics Module
-- Revenue reports  
-- Book performance  
-- Order tracking  
-- Data export (Excel)
 
 ---
 
